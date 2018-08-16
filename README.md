@@ -1,4 +1,4 @@
-# U8g2_Arduino: Arduino Monochrome Graphics Library
+# U8g2_Arduino: Arduino Monochroma y escala de grices Graphics Library
 
 
 Actualizado para poder trabajar con el ESP8266
@@ -11,9 +11,9 @@ con las siguientes placas o modulos: SSD1305, SSD1306, SSD1309, SSD1322, SSD1325
 
 U8glib V2 library for Arduino
 
-Description: https://github.com/olikraus/u8g2/wiki
+Descripción: https://github.com/olikraus/u8g2/wiki (Pagina Original en inglés)
 
-Issue Tracker: https://github.com/olikraus/u8g2/issues
+Bugs aqui (Issue Tracker): https://github.com/enlinea777/enlinea777-u8g2_suport_ESP8266/issues
 
-Download (2.23.16): https://github.com/olikraus/U8g2_Arduino/archive/master.zip
+Descargar (Download) (2.23.17): https://github.com/enlinea777/enlinea777-u8g2_suport_ESP8266/archive/master.zip
 
