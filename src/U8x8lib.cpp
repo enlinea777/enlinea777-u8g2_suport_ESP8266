@@ -961,10 +961,14 @@ extern "C" uint8_t u8x8_byte_arduino_sw_i2c(U8X8_UNUSED u8x8_t *u8x8, U8X8_UNUSE
 /* not AVR architecture, fallback */
 extern "C" uint8_t u8x8_byte_arduino_sw_i2c(U8X8_UNUSED u8x8_t *u8x8, U8X8_UNUSED uint8_t msg, U8X8_UNUSED uint8_t arg_int, U8X8_UNUSED void *arg_ptr)
 {
+#if defined(ARDUINO_ESP8266_WEMOS_D1MINI)
 	Wire.setClock(700000L); 
+#endif	
 	Wire.begin();
     return u8x8_byte_sw_i2c(u8x8, msg,arg_int, arg_ptr);
 }
+
+
 
 #endif
 
@@ -979,23 +983,37 @@ extern "C" uint8_t u8x8_byte_arduino_hw_i2c(U8X8_UNUSED u8x8_t *u8x8, U8X8_UNUSE
       Wire.write((uint8_t *)arg_ptr, (int)arg_int);
       break;
     case U8X8_MSG_BYTE_INIT:
-#if defined(ESP8266) || defined(ARDUINO_ARCH_ESP8266) || defined(ESP_PLATFORM) || defined(ARDUINO_ARCH_ESP32)
-      /* for ESP8266/ESP32, Wire.begin has two more arguments: clock and data */          
-      if ( u8x8->pins[U8X8_PIN_I2C_CLOCK] != U8X8_PIN_NONE && u8x8->pins[U8X8_PIN_I2C_DATA] != U8X8_PIN_NONE )
+	
+#if defined(ARDUINO_ESP8266_WEMOS_D1MINI)
+	Wire.setClock(700000L); 	  
+	if ( u8x8->pins[U8X8_PIN_I2C_CLOCK] != U8X8_PIN_NONE && u8x8->pins[U8X8_PIN_I2C_DATA] != U8X8_PIN_NONE )
       {
 	// second argument for the wire lib is the clock pin. In u8g2, the first argument of the  clock pin in the clock/data pair
-	Wire.setClock(700000L); 
+	//Wire.setClock(100000L); 
+	Wire.begin(u8x8->pins[U8X8_PIN_I2C_DATA] , u8x8->pins[U8X8_PIN_I2C_CLOCK]);
+	}else{
+	Wire.begin();	
+	}
+
+#elif defined(ESP8266) || defined(ARDUINO_ARCH_ESP8266) || defined(ESP_PLATFORM) || defined(ARDUINO_ARCH_ESP32)
+      /* for ESP8266/ESP32, Wire.begin has two more arguments: clock and data */          
+    if ( u8x8->pins[U8X8_PIN_I2C_CLOCK] != U8X8_PIN_NONE && u8x8->pins[U8X8_PIN_I2C_DATA] != U8X8_PIN_NONE )
+      {
+	// second argument for the wire lib is the clock pin. In u8g2, the first argument of the  clock pin in the clock/data pair
+	//Wire.setClock(100000L); 
 	Wire.begin(u8x8->pins[U8X8_PIN_I2C_DATA] , u8x8->pins[U8X8_PIN_I2C_CLOCK]);
       }
       else
       {
-	Wire.setClock(700000L); 	  
+	Wire.setClock(100000L); 	  
 	Wire.begin();
       }
 #else
-	Wire.setClock(700000L); 
+	Wire.setClock(100000L); 
       Wire.begin();
 #endif
+
+
       break;
     case U8X8_MSG_BYTE_SET_DC:
       break;
@@ -1005,9 +1023,14 @@ extern "C" uint8_t u8x8_byte_arduino_hw_i2c(U8X8_UNUSED u8x8_t *u8x8, U8X8_UNUSE
       /* if there is any error with Wire.setClock() just remove this function call */
       if ( u8x8->display_info->i2c_bus_clock_100kHz >= 4 )
       {
-	Wire.setClock(400000L); 
+	#if defined(ARDUINO_ESP8266_WEMOS_D1MINI)
+		Wire.setClock(700000L); 	  
+	#else
+		Wire.setClock(400000L); 
+	#endif
       }
 #endif
+
       Wire.beginTransmission(u8x8_GetI2CAddress(u8x8)>>1);
       break;
     case U8X8_MSG_BYTE_END_TRANSFER:

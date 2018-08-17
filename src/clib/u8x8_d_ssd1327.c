@@ -319,12 +319,12 @@ static const u8x8_display_info_t u8x8_ssd1327_ea_w128128_display_info =
   /* chip_disable_level = */ 1,
   
   /* post_chip_enable_wait_ns = */ 0,
-  /* pre_chip_disable_wait_ns = */ 0,
+  /* pre_chip_disable_wait_ns = */ 1,
   /* reset_pulse_width_ms = */ 0, 	
-  /* post_reset_wait_ms = */ 0, 		/**/
+  /* post_reset_wait_ms = */ 1, 		/**/
   /* sda_setup_time_ns = */ 0,		/* */
   /* sck_pulse_width_ns = */ 0,	/*  */
-  /* sck_clock_hz = */ 7000000UL,	/* since Arduino 1.6.0, the SPI bus speed in Hz. Should be  1000000000/sck_pulse_width_ns */
+  /* sck_clock_hz = */ 7000000L,	/* since Arduino 1.6.0, the SPI bus speed in Hz. Should be  1000000000/sck_pulse_width_ns */
   /* spi_mode = */ 0,		/* active high, rising edge */
   /* i2c_bus_clock_100kHz = */ 4,	/* use 1 instead of 4, because the SSD1327 seems to be very slow */
   /* data_setup_time_ns = */ 0,
@@ -342,38 +342,56 @@ static const uint8_t u8x8_d_ssd1327_ea_w128128_init_seq[] = {
     
   U8X8_START_TRANSFER(),             	/* enable chip, delay is part of the transfer start */
   
-  U8X8_CA(0x0fd, 0x012),		/* unlock display, usually not required because the display is unlocked after reset */
-  U8X8_C(0x0ae),		                /* display off */
-  //U8X8_CA(0x0a8, 0x03f),		/* multiplex ratio: 0x03f * 1/64 duty */
-  U8X8_CA(0x0a8, 0x05f),		/* multiplex ratio: 0x05f * 1/64 duty */
-  U8X8_CA(0x0a1, 0x000),		/* display start line */
-  //U8X8_CA(0x0a2, 0x04c),		/* display offset, shift mapping ram counter */
   
-  U8X8_CA(0x0a2, 0x010),		/* display offset, shift mapping ram counter */
-  U8X8_CA(0x0a0, 0x051),		/* remap configuration */
-  
-  
-  U8X8_CA(0x0ab, 0x001),		/* Enable internal VDD regulator (RESET) */
-  //U8X8_CA(0x081, 0x070),		/* contrast, brightness, 0..128 */
-  U8X8_CA(0x081, 0x053),		/* contrast, brightness, 0..128 */
-  //U8X8_CA(0x0b1, 0x055),                    /* phase length */
-  U8X8_CA(0x0b1, 0x051),                    /* phase length */  
-  //U8X8_CA(0x0b3, 0x091),		/* set display clock divide ratio/oscillator frequency (set clock as 135 frames/sec) */			
-  U8X8_CA(0x0b3, 0x001),		/* set display clock divide ratio/oscillator frequency  */			
-  
-  //? U8X8_CA(0x0ad, 0x002),		/* master configuration: disable embedded DC-DC, enable internal VCOMH */
-  //? U8X8_C(0x086),				/* full current range (0x084, 0x085, 0x086) */
-  
-  U8X8_C(0x0b9),				/* use linear lookup table */
+  U8X8_C(0xae),//--turn off oled panel
 
-  //U8X8_CA(0x0bc, 0x010),                    /* pre-charge voltage level */
-  U8X8_CA(0x0bc, 0x008),                    /* pre-charge voltage level */
-  //U8X8_CA(0x0be, 0x01c),                     /* VCOMH voltage */
-  U8X8_CA(0x0be, 0x007),                     /* VCOMH voltage */
-  U8X8_CA(0x0b6, 0x001),		/* second precharge */
-  U8X8_CA(0x0d5, 0x062),		/* enable second precharge, internal vsl (bit0 = 0) */
-  
-  U8X8_C(0x0a4),				/* normal display mode */
+   U8X8_C(0x15),    //set column address
+   U8X8_C(0x00),    //start column   0
+   U8X8_C(0x7f),    //end column   127
+
+   U8X8_C(0x75),    //set row address
+   U8X8_C(0x00),    //start row   0
+   U8X8_C(0x7f),    //end row   127
+
+   U8X8_C(0x81),    //set contrast control
+   U8X8_C(0x80),
+
+   U8X8_C(0xa0),    //gment remap
+   U8X8_C(0x51),    //51
+
+   U8X8_C(0xa1),    //start line
+   U8X8_C(0x00),
+
+   U8X8_C(0xa2),    //display offset
+   U8X8_C(0x00),
+
+   U8X8_C(0xa4),    //rmal display
+   U8X8_C(0xa8),    //set multiplex ratio
+   U8X8_C(0x7f),
+
+   U8X8_C(0xb1),    //set phase leghth
+   U8X8_C(0xf1),
+
+   U8X8_C(0xb3),    //set dclk
+   U8X8_C(0x70),    //80Hz:0xc1 90Hz:0xe1   100Hz:0x00   110Hz:0x30 120Hz:0x50   130Hz:0x70     01
+
+   U8X8_C(0xab),    //
+   U8X8_C(0x01),    //
+
+   U8X8_C(0xb6),    //set phase leghth
+   U8X8_C(0x0f),
+
+   U8X8_C(0xbe),
+   U8X8_C(0x0f),
+
+   U8X8_C(0xbc),
+   U8X8_C(0x08),
+
+   U8X8_C(0xd5),
+   U8X8_C(0x62),
+
+   U8X8_C(0xfd),
+   U8X8_C(0x12),				/* normal display mode */
     
   U8X8_END_TRANSFER(),             	/* disable chip */
   U8X8_END()             			/* end of sequence */
