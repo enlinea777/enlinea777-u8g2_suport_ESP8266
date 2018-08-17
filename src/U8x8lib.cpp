@@ -961,6 +961,8 @@ extern "C" uint8_t u8x8_byte_arduino_sw_i2c(U8X8_UNUSED u8x8_t *u8x8, U8X8_UNUSE
 /* not AVR architecture, fallback */
 extern "C" uint8_t u8x8_byte_arduino_sw_i2c(U8X8_UNUSED u8x8_t *u8x8, U8X8_UNUSED uint8_t msg, U8X8_UNUSED uint8_t arg_int, U8X8_UNUSED void *arg_ptr)
 {
+	Wire.setClock(700000L); 
+	Wire.begin();
     return u8x8_byte_sw_i2c(u8x8, msg,arg_int, arg_ptr);
 }
 

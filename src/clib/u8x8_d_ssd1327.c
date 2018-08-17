@@ -318,17 +318,17 @@ static const u8x8_display_info_t u8x8_ssd1327_ea_w128128_display_info =
   /* chip_enable_level = */ 0,
   /* chip_disable_level = */ 1,
   
-  /* post_chip_enable_wait_ns = */ 20,
-  /* pre_chip_disable_wait_ns = */ 10,
-  /* reset_pulse_width_ms = */ 100, 	
-  /* post_reset_wait_ms = */ 100, 		/**/
-  /* sda_setup_time_ns = */ 100,		/* */
-  /* sck_pulse_width_ns = */ 100,	/*  */
-  /* sck_clock_hz = */ 4000000UL,	/* since Arduino 1.6.0, the SPI bus speed in Hz. Should be  1000000000/sck_pulse_width_ns */
+  /* post_chip_enable_wait_ns = */ 0,
+  /* pre_chip_disable_wait_ns = */ 0,
+  /* reset_pulse_width_ms = */ 0, 	
+  /* post_reset_wait_ms = */ 0, 		/**/
+  /* sda_setup_time_ns = */ 0,		/* */
+  /* sck_pulse_width_ns = */ 0,	/*  */
+  /* sck_clock_hz = */ 7000000UL,	/* since Arduino 1.6.0, the SPI bus speed in Hz. Should be  1000000000/sck_pulse_width_ns */
   /* spi_mode = */ 0,		/* active high, rising edge */
-  /* i2c_bus_clock_100kHz = */ 1,	/* use 1 instead of 4, because the SSD1327 seems to be very slow */
-  /* data_setup_time_ns = */ 40,
-  /* write_pulse_width_ns = */ 60,	
+  /* i2c_bus_clock_100kHz = */ 4,	/* use 1 instead of 4, because the SSD1327 seems to be very slow */
+  /* data_setup_time_ns = */ 0,
+  /* write_pulse_width_ns = */ 0,	
   /* tile_width = */ 16,
   /* tile_hight = */ 16,
   /* default_x_offset = */ 0,
@@ -444,9 +444,9 @@ static const u8x8_display_info_t u8x8_ssd1327_128x128_display_info =
   /* post_reset_wait_ms = */ 100, 		/**/
   /* sda_setup_time_ns = */ 100,		/* */
   /* sck_pulse_width_ns = */ 100,	/*  */
-  /* sck_clock_hz = */ 4000000UL,	/* since Arduino 1.6.0, the SPI bus speed in Hz. Should be  1000000000/sck_pulse_width_ns */
+  /* sck_clock_hz = */ 7000000UL,	/* since Arduino 1.6.0, the SPI bus speed in Hz. Should be  1000000000/sck_pulse_width_ns */
   /* spi_mode = */ 0,		/* active high, rising edge */
-  /* i2c_bus_clock_100kHz = */ 1,	/* use 1 instead of 4, because the SSD1327 seems to be very slow */
+  /* i2c_bus_clock_100kHz = */ 4,	/* use 1 instead of 4, because the SSD1327 seems to be very slow */
   /* data_setup_time_ns = */ 40,
   /* write_pulse_width_ns = */ 60,	
   /* tile_width = */ 16,
@@ -509,7 +509,7 @@ static const uint8_t u8x8_d_ssd1327_128x128_init_seq[] = {
    U8X8_C(0xf1),
 
    U8X8_C(0xb3),    //set dclk
-   U8X8_C(0x00),    //80Hz:0xc1 90Hz:0xe1   100Hz:0x00   110Hz:0x30 120Hz:0x50   130Hz:0x70     01
+   U8X8_C(0x70),    //80Hz:0xc1 90Hz:0xe1   100Hz:0x00   110Hz:0x30 120Hz:0x50   130Hz:0x70     01
 
    U8X8_C(0xab),    //
    U8X8_C(0x01),    //
