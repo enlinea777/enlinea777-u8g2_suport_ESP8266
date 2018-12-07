@@ -15,3 +15,8 @@ Bugs aqui (Issue Tracker): https://github.com/enlinea777/enlinea777-u8g2_suport_
 
 Descargar (Download) (2.23.17): https://github.com/enlinea777/enlinea777-u8g2_suport_ESP8266/archive/master.zip
 
+constructor utilizado:
+
+U8G2_SSD1327_EA_W128128_F_HW_I2C u8g2_P(U8G2_R0,U8X8_PIN_NONE,D1,D2); 
+
+Los pin D1 y D2 se pueden cambiar por cualquiera de los pines digitales 
